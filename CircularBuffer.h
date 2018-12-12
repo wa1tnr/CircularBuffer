@@ -66,14 +66,14 @@ public:
 	/**
 	 * Adds an element to the beginning of buffer: the operation returns `false` if the addition caused overwriting an existing element.
 	 */
-	template <typename Obj>
-	bool unshift(Obj&& value);
+	template<typename W>
+	bool unshift(W&& value);
 
 	/**
 	 * Adds an element to the end of buffer: the operation returns `false` if the addition caused overwriting an existing element.
 	 */
-	template <typename Obj>
-	bool push(Obj&& value);
+	template<typename W>
+	bool push(W&& value);
 
 	/**
 	 * Removes an element from the beginning of the buffer.
@@ -131,10 +131,10 @@ public:
 	#endif
 
 private:
-	union Container {
-		T obj;
-		Container () {}
-		~Container () {}
+	union Node {
+		T value;
+		Node() {}
+		~Node() {}
 	} buffer[S], *head, *tail;
 #ifndef CIRCULAR_BUFFER_INT_SAFE
 	IT count;

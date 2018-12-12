@@ -22,14 +22,14 @@ CircularBuffer<T,S,IT>::CircularBuffer() :
 }
 
 template<typename T, size_t S, typename IT>
-template <typename Obj>
-bool CircularBuffer<T,S,IT>::unshift(Obj&& value) {
+template<typename W>
+bool CircularBuffer<T,S,IT>::unshift(W&& value) {
 	if (head == buffer) {
 		head = buffer + capacity;
 	}
 	--head;
-	if (count == capacity) head->obj.~T ();
-	new (&head->obj) T (static_cast<Obj&&> (value));
+	if (count == capacity) head->value.~T ();
+	new (&head->value) T (static_cast<W&&> (value));
 	if (count == capacity) {
 		if (tail-- == buffer) {
 			tail = buffer + capacity - 1;
@@ -46,13 +46,13 @@ bool CircularBuffer<T,S,IT>::unshift(Obj&& value) {
 
 
 template<typename T, size_t S, typename IT>
-template <typename Obj>
-bool CircularBuffer<T,S,IT>::push(Obj&& value) {
+template<typename W>
+bool CircularBuffer<T,S,IT>::push(W&& value) {
 	if (++tail == buffer + capacity) {
 		tail = buffer;
 	}
-	if (count == capacity) tail->obj.~T ();
-	new (&tail->obj) T (static_cast<Obj&&> (value));
+	if (count == capacity) tail->value.~T ();
+	new (&tail->value) T (static_cast<W&&> (value));
 	if (count == capacity) {
 		if (++head == buffer + capacity) {
 			head = buffer;
@@ -69,8 +69,8 @@ bool CircularBuffer<T,S,IT>::push(Obj&& value) {
 template<typename T, size_t S, typename IT>
 T CircularBuffer<T,S,IT>::shift() {
 	if (count <= 0) abort();
-	T result (static_cast<T&&> (head->obj));
-	head->obj.~T ();
+	T result (static_cast<T&&> (head->value));
+	head->value.~T ();
 	head++;
 	
 	if (head >= buffer + capacity) {
@@ -83,8 +83,8 @@ T CircularBuffer<T,S,IT>::shift() {
 template<typename T, size_t S, typename IT>
 T CircularBuffer<T,S,IT>::pop() {
 	if (count <= 0) abort();
-	T result (static_cast<T&&> (tail->obj));
-	tail->obj.~T ();
+	T result (static_cast<T&&> (tail->value));
+	tail->value.~T ();
 	tail--;
 	if (tail < buffer) {
 		tail = buffer + capacity - 1;
@@ -95,17 +95,17 @@ T CircularBuffer<T,S,IT>::pop() {
 
 template<typename T, size_t S, typename IT>
 inline T& CircularBuffer<T,S,IT>::first() {
-	return head->obj;
+	return head->value;
 }
 
 template<typename T, size_t S, typename IT>
 inline T& CircularBuffer<T,S,IT>::last() {
-	return tail->obj;
+	return tail->value;
 }
 
 template<typename T, size_t S, typename IT>
 T& CircularBuffer<T,S,IT>::operator [](IT index) {
-	return (buffer + ((head - buffer + index) % capacity))->obj;
+	return (buffer + ((head - buffer + index) % capacity))->value;
 }
 
 template<typename T, size_t S, typename IT>
@@ -132,7 +132,7 @@ template<typename T, size_t S, typename IT>
 void inline CircularBuffer<T,S,IT>::clear() {
 	auto scan = head;
 	for (IT i = 0; i < count; ++i) {
-		scan->obj.~T ();
+		scan->value.~T ();
 		if (++scan == buffer + capacity)
 			scan = buffer;
 	}
