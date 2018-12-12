@@ -131,7 +131,7 @@ bool inline CircularBuffer<T,S,IT>::isFull() const {
 template<typename T, size_t S, typename IT>
 void inline CircularBuffer<T,S,IT>::clear() {
 	auto scan = head;
-	for (IT i = 0; i < count; ++i) {
+	for (IT i = 0; i < count; i++) {
 		scan->value.~T ();
 		if (++scan == buffer + capacity)
 			scan = buffer;
@@ -150,10 +150,10 @@ void inline CircularBuffer<T,S,IT>::debug(Print* out) {
 		out->print("  ");
 		out->print(*(buffer + i));
 		if (head == buffer + i) {
-			out->print(" head");
+			out->print("<-head");
 		} 
 		if (tail == buffer + i) {
-			out->print(" tail");
+			out->print("<-tail");
 		}
 		out->println();
 	}
@@ -167,10 +167,10 @@ void inline CircularBuffer<T,S,IT>::debugFn(Print* out, void (*printFunction)(Pr
 		out->print("  ");
 		printFunction(out, *(buffer + i));
 		if (head == buffer + i) {
-			out->print(" head");
+			out->print("<-head");
 		} 
 		if (tail == buffer + i) {
-			out->print(" tail");
+			out->print("<-tail");
 		}
 		out->println();
 	}
