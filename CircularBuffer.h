@@ -26,9 +26,11 @@
 
 #if defined(__AVR__) && !defined(STD_LIB_NEW_OP)
 	/**
-	 * Overload for operator new for placement-new syntax. In standard C++, this is provided by the standard library header <new>. However, AVR-GCC does not
-	 * provide that header, so we define our own operator new. If any other Arduino library does the same, this might result in a compiler error.
-	 * In that case, please declare the STD_LIB_NEW_OP switch.
+	 * Overloading for operator new for placement-new syntax.
+	 * In standard C++, this is provided by the standard library header <new>. However, AVR-GCC does not provide that header,
+	 * so we define our own operator new.
+	 * If any other Arduino library does the same, this might result in a compiler error, in which case,
+	 * please declare the STD_LIB_NEW_OP switch to skip this.
 	 */
 	inline void *operator new(size_t, void *buf) { return buf; }
 #else
