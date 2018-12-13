@@ -66,6 +66,18 @@ public:
 	CircularBuffer();
 
 	/**
+	 * Disables copy constructor
+	 */
+	CircularBuffer(const CircularBuffer&) = delete;
+	CircularBuffer(CircularBuffer&&) = delete;
+
+	/**
+	 * Disables assignment operator
+	 */
+	CircularBuffer& operator=(const CircularBuffer&) = delete;
+	CircularBuffer& operator=(CircularBuffer&&) = delete;
+
+	/**
 	 * Adds an element to the beginning of buffer: the operation returns `false` if the addition caused overwriting an existing element.
 	 */
 	template<typename W>
@@ -90,27 +102,27 @@ public:
 	/**
 	 * Returns the element at the beginning of the buffer.
 	 */
-	inline T& first();
+	inline T& first() const;
 
 	/**
 	 * Returns the element at the end of the buffer.
 	 */
-	inline T& last();
+	inline T& last() const;
 
 	/**
 	 * Array-like access to buffer
 	 */
-	T& operator [] (IT index);
+	T& operator [] (IT index) const;
 
 	/**
 	 * Returns how many elements are actually stored in the buffer.
 	 */
-	IT inline size();
+	IT inline size() const;
 
 	/**
 	 * Returns how many elements can be safely pushed into the buffer.
 	 */
-	IT inline available();
+	IT inline available() const;
 
 	/**
 	 * Returns `true` if no elements can be removed from the buffer.

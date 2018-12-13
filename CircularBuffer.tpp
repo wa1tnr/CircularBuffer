@@ -94,27 +94,27 @@ T CircularBuffer<T,S,IT>::pop() {
 }
 
 template<typename T, size_t S, typename IT>
-inline T& CircularBuffer<T,S,IT>::first() {
+inline T& CircularBuffer<T,S,IT>::first() const {
 	return head->value;
 }
 
 template<typename T, size_t S, typename IT>
-inline T& CircularBuffer<T,S,IT>::last() {
+inline T& CircularBuffer<T,S,IT>::last() const {
 	return tail->value;
 }
 
 template<typename T, size_t S, typename IT>
-T& CircularBuffer<T,S,IT>::operator [](IT index) {
+T& CircularBuffer<T,S,IT>::operator [](IT index) const {
 	return (buffer + ((head - buffer + index) % capacity))->value;
 }
 
 template<typename T, size_t S, typename IT>
-IT inline CircularBuffer<T,S,IT>::size() {
+IT inline CircularBuffer<T,S,IT>::size() const {
 	return count;
 }
 
 template<typename T, size_t S, typename IT>
-IT inline CircularBuffer<T,S,IT>::available() {
+IT inline CircularBuffer<T,S,IT>::available() const {
 	return capacity - count;
 }
 
