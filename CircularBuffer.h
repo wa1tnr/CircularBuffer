@@ -112,7 +112,8 @@ public:
 	/**
 	 * Array-like access to buffer
 	 */
-	T& operator [] (IT index) const;
+	const T& operator [] (IT index) const;
+	T& operator [] (IT index);
 
 	/**
 	 * Returns how many elements are actually stored in the buffer.
