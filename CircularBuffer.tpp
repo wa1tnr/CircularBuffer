@@ -68,7 +68,7 @@ bool CircularBuffer<T,S,IT>::push(W&& value) {
 
 template<typename T, size_t S, typename IT>
 T CircularBuffer<T,S,IT>::shift() {
-	if (count <= 0) abort();
+	if (count <= 0) return nullptr;
 	T result (static_cast<T&&> (head->value));
 	head->value.~T ();
 	head++;
@@ -82,7 +82,7 @@ T CircularBuffer<T,S,IT>::shift() {
 
 template<typename T, size_t S, typename IT>
 T CircularBuffer<T,S,IT>::pop() {
-	if (count <= 0) abort();
+	if (count <= 0) return nullptr;
 	T result (static_cast<T&&> (tail->value));
 	tail->value.~T ();
 	tail--;
